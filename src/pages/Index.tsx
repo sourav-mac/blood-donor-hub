@@ -14,29 +14,27 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useDonors } from '@/hooks/useDonors';
 import { BLOOD_GROUPS, Donor } from '@/types/donor';
-import { toast } from 'sonner';
 import { Users, Droplets, Heart, Search, RefreshCw } from 'lucide-react';
 
 const Index = () => {
-  const { donors, addDonor, updateDonor, deleteDonor } = useDonors();
+  const { donors, loading, addDonor, updateDonor, deleteDonor } = useDonors();
   const [filterBloodGroup, setFilterBloodGroup] = useState<string>('all');
 
   const filteredDonors = useMemo(() => {
     if (filterBloodGroup === 'all') return donors;
-    return donors.filter((d) => d.bloodGroup === filterBloodGroup);
+    return donors.filter((d) => d.blood_group === filterBloodGroup);
   }, [donors, filterBloodGroup]);
 
   const bloodGroupCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     BLOOD_GROUPS.forEach((group) => {
-      counts[group] = donors.filter((d) => d.bloodGroup === group).length;
+      counts[group] = donors.filter((d) => d.blood_group === group).length;
     });
     return counts;
   }, [donors]);
 
-  const handleAddDonor = (donor: Omit<Donor, 'id' | 'createdAt'>) => {
-    addDonor(donor);
-    toast.success('Donor added successfully!');
+  const handleAddDonor = async (donor: Omit<Donor, 'id' | 'created_at'>) => {
+    await addDonor(donor);
   };
 
   const handleResetFilter = () => {
@@ -152,6 +150,7 @@ const Index = () => {
               donors={filteredDonors}
               onUpdate={updateDonor}
               onDelete={deleteDonor}
+              loading={loading}
             />
           </CardContent>
         </Card>

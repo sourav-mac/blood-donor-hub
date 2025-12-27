@@ -28,12 +28,12 @@ import {
 import { Donor } from '@/types/donor';
 import { DonorForm } from './DonorForm';
 import { Edit2, Trash2, Users } from 'lucide-react';
-import { toast } from 'sonner';
 
 interface DonorTableProps {
   donors: Donor[];
-  onUpdate: (id: string, updates: Partial<Omit<Donor, 'id' | 'createdAt'>>) => void;
+  onUpdate: (id: string, updates: Partial<Omit<Donor, 'id' | 'created_at'>>) => void;
   onDelete: (id: string) => void;
+  loading?: boolean;
 }
 
 const getBloodGroupColor = (group: string) => {
@@ -50,25 +50,32 @@ const getBloodGroupColor = (group: string) => {
   return colors[group] || 'bg-muted text-muted-foreground';
 };
 
-export function DonorTable({ donors, onUpdate, onDelete }: DonorTableProps) {
+export function DonorTable({ donors, onUpdate, onDelete, loading }: DonorTableProps) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editDonor, setEditDonor] = useState<Donor | null>(null);
 
   const handleDelete = () => {
     if (deleteId) {
       onDelete(deleteId);
-      toast.success('Donor deleted successfully');
       setDeleteId(null);
     }
   };
 
-  const handleUpdate = (updates: Omit<Donor, 'id' | 'createdAt'>) => {
+  const handleUpdate = (updates: Omit<Donor, 'id' | 'created_at'>) => {
     if (editDonor) {
       onUpdate(editDonor.id, updates);
-      toast.success('Donor updated successfully');
       setEditDonor(null);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+        <p className="text-muted-foreground">Loading donors...</p>
+      </div>
+    );
+  }
 
   if (donors.length === 0) {
     return (
@@ -113,9 +120,9 @@ export function DonorTable({ donors, onUpdate, onDelete }: DonorTableProps) {
                 <TableCell>
                   <Badge 
                     variant="outline" 
-                    className={`font-semibold ${getBloodGroupColor(donor.bloodGroup)}`}
+                    className={`font-semibold ${getBloodGroupColor(donor.blood_group)}`}
                   >
-                    {donor.bloodGroup}
+                    {donor.blood_group}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-muted-foreground">{donor.phone}</TableCell>

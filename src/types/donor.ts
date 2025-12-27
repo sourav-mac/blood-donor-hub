@@ -1,12 +1,12 @@
+export type BloodGroup = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+
 export interface Donor {
   id: string;
   name: string;
   age: number;
-  bloodGroup: string;
+  blood_group: BloodGroup;
   phone: string;
-  createdAt: Date;
+  created_at: string;
 }
-
-export type BloodGroup = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
 
 export const BLOOD_GROUPS: BloodGroup[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
