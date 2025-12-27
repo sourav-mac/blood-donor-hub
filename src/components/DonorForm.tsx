@@ -9,12 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { BLOOD_GROUPS, Donor } from '@/types/donor';
+import { BLOOD_GROUPS, Donor, BloodGroup } from '@/types/donor';
 import { UserPlus, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface DonorFormProps {
-  onSubmit: (donor: Omit<Donor, 'id' | 'createdAt'>) => void;
+  onSubmit: (donor: Omit<Donor, 'id' | 'created_at'>) => void;
   onCancel?: () => void;
   initialData?: Donor;
   mode?: 'add' | 'edit';
@@ -23,7 +23,7 @@ interface DonorFormProps {
 export function DonorForm({ onSubmit, onCancel, initialData, mode = 'add' }: DonorFormProps) {
   const [name, setName] = useState(initialData?.name || '');
   const [age, setAge] = useState(initialData?.age?.toString() || '');
-  const [bloodGroup, setBloodGroup] = useState(initialData?.bloodGroup || '');
+  const [bloodGroup, setBloodGroup] = useState<BloodGroup | ''>(initialData?.blood_group || '');
   const [phone, setPhone] = useState(initialData?.phone || '');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -50,7 +50,7 @@ export function DonorForm({ onSubmit, onCancel, initialData, mode = 'add' }: Don
     onSubmit({
       name: name.trim(),
       age: parseInt(age),
-      bloodGroup,
+      blood_group: bloodGroup as BloodGroup,
       phone: phone.trim(),
     });
 
@@ -104,7 +104,7 @@ export function DonorForm({ onSubmit, onCancel, initialData, mode = 'add' }: Don
           <Label htmlFor="bloodGroup" className="text-sm font-medium">
             Blood Group
           </Label>
-          <Select value={bloodGroup} onValueChange={setBloodGroup}>
+          <Select value={bloodGroup} onValueChange={(v) => setBloodGroup(v as BloodGroup)}>
             <SelectTrigger id="bloodGroup">
               <SelectValue placeholder="Select blood group" />
             </SelectTrigger>

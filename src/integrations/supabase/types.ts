@@ -14,7 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      donors: {
+        Row: {
+          age: number
+          blood_group: string
+          created_at: string
+          id: string
+          name: string
+          phone: string
+        }
+        Insert: {
+          age: number
+          blood_group: string
+          created_at?: string
+          id?: string
+          name: string
+          phone: string
+        }
+        Update: {
+          age?: number
+          blood_group?: string
+          created_at?: string
+          id?: string
+          name?: string
+          phone?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
